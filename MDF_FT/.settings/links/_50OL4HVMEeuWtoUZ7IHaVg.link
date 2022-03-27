@@ -1,0 +1,54 @@
+{
+  "itemId" : "_50OL4HVMEeuWtoUZ7IHaVg",
+  "contextList" : [ {
+    "contextName" : "Default",
+    "repoId" : "_a5TCMEBOEeumVuJ92vehZw",
+    "parameterList" : [ {
+      "id" : "_ftpYYUEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_loginTimeout"
+    }, {
+      "id" : "_ftpYYkEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_account"
+    }, {
+      "id" : "_ftpYY0EGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_schemaName"
+    }, {
+      "id" : "_ftpYZEEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_customRegionID"
+    }, {
+      "id" : "_ftpYZUEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_db"
+    }, {
+      "id" : "_ftpYZkEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_userId"
+    }, {
+      "id" : "_ftpYZ0EGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_warehouse"
+    }, {
+      "id" : "_ftpYaEEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_jdbcParameters"
+    }, {
+      "id" : "_ftpYaUEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_role"
+    }, {
+      "id" : "_ftpYakEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_authenticationType"
+    }, {
+      "id" : "_ftpYa0EGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_region"
+    }, {
+      "id" : "_ftpYbEEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_keyAlias"
+    }, {
+      "id" : "_ftpYbUEGEeulpo7vRayEMw",
+      "name" : "connection_snowflake_mdfft_metadata_userPassword"
+    } ]
+  }, {
+    "contextName" : "Default",
+    "repoId" : "_KJ7r0Ge0EeuXFMamJ4D36g",
+    "parameterList" : [ {
+      "id" : "_T3FngIHoEeua27IfaldaKQ",
+      "name" : "sendNotification"
+    } ]
+  } ]
+}

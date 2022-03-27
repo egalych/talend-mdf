@@ -1,0 +1,284 @@
+package routines;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import org.quartz.CronExpression;
+import com.opencsv.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+ 
+import org.w3c.dom.Document;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema.Builder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
+import org.quartz.CronExpression;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class CommonFunctions {
+
+    /**
+     * helloExample: not return value, only print "hello" + message.
+     * 
+     * 
+     * {talendTypes} String
+     * 
+     * {Category} User Defined
+     * 
+     * {param} string("world") input: The string need to be printed.
+     * 
+     * {example} helloExemple("world") # hello world !.
+     */
+    public static void helloExample(String message) {
+        if (message == null) {
+            message = "World"; //$NON-NLS-1$
+        }
+        System.out.println("Hello " + message + " !"); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
+public static void  convertJSONToCSV(File jsonFile,File csvFile) throws JsonGenerationException, JsonMappingException, IOException {
+		
+	CsvMapper csvMapper = new CsvMapper();
+	
+	JsonNode jsonTree = new ObjectMapper().readTree(jsonFile);
+	
+	Builder csvSchemaBuilder = CsvSchema.builder();
+	JsonNode firstObject = jsonTree.elements().next();
+	firstObject.fieldNames().forEachRemaining(fieldName -> {csvSchemaBuilder.addColumn(fieldName);} );		
+	CsvSchema csvSchema = csvSchemaBuilder.build().withHeader();	
+
+	csvMapper.writerFor(JsonNode.class).with(csvSchema).writeValue(csvFile, jsonTree);
+		
+	}
+public static void  convertXMLToJSON(String xmlFilePath,String jsonFilePath) throws JsonGenerationException, JsonMappingException, IOException, JSONException {
+	 String line="";
+	 String str="";
+	BufferedReader br = new BufferedReader(new FileReader(xmlFilePath));
+    BufferedWriter bw = new BufferedWriter(new FileWriter(jsonFilePath));
+    while ((line = br.readLine()) != null) 
+    {   
+        str+=line;  
+    }
+    JSONObject jsondata = XML.toJSONObject(str);
+    
+    
+    JSONObject jsonroot= jsondata.getJSONObject("root");
+  
+   
+
+    bw.write(jsonroot.getJSONArray("row").toString(4));
+    bw.close();
+    br.close();
+		
+	}
+
+public static void convertXMLToCSV(String xmlFilePath,String csvFilePath) throws ParserConfigurationException, SAXException, IOException{
+	
+	DocumentBuilderFactory factory= DocumentBuilderFactory.newInstance();
+	DocumentBuilder builder=factory.newDocumentBuilder();
+	
+	Document document=builder.parse(xmlFilePath);
+	document.getDocumentElement().normalize();
+    CSVWriter writer = new CSVWriter(new FileWriter(csvFilePath));
+    
+	ArrayList<String> header= new ArrayList<String>();
+    ArrayList<String> data= new ArrayList<String>();
+    
+    //Get Repeating node name
+    String repeatingTagName=document.getChildNodes().item(0).getChildNodes().item(1).getNodeName();
+	NodeList nList= document.getDocumentElement().getElementsByTagName(repeatingTagName);
+	
+	// Read columns from xml document for csv file header
+	
+	for(int i=0;i<nList.item(0).getChildNodes().getLength();i++) {
+		
+		  Node n=nList.item(0).getChildNodes().item(i);
+		  
+		  if(n.getNodeType()==1) {
+			  header.add(nList.item(0).getChildNodes().item(i).getNodeName());
+			  				  
+		   }
+		 	  
+	  }
+	
+	//Create csv file with header
+	
+	writer.writeNext(header.toArray(new String[0]));
+	
+	//Update csv file with data read from xml nodes
+	
+	 for(int i=0;i<nList.getLength();i++) {
+		  
+		 NodeList n= nList.item(i).getChildNodes();
+		
+		  for (int j=1;j<n.getLength();j++) {
+			  
+			  if(n.item(j).getNodeType()==1) {
+		
+				  data.add(n.item(j).getTextContent());				 
+				  }
+							 
+		  }
+		  writer.writeNext(data.toArray(new String[0]));
+		  data.clear();;
+
+	  }
+	
+	
+	 writer.close();
+    
+}
+
+public static String getQueryStatement(String rule_table,String rule_columns,String rule_desc,String rule_type) {
+	String query="";
+	Map<String, String> rule_desc_map = new HashMap();
+	 String[] rule_desc_list=rule_desc.split(",");
+	
+	 for(int i=0;i<rule_desc_list.length;i++ ) {
+		String key=rule_desc_list[i].split(":")[0];
+		String value=rule_desc_list[i].split(":")[1];
+		rule_desc_map.put(key, value);
+	}
+	 
+	 switch(rule_type.toUpperCase()) {
+	  case "LOOK_UP":
+		  if(!rule_desc.equals(null)) {
+				query=query+"SELECT * FROM "+rule_table + " WHERE "+rule_columns.toUpperCase()+ " "+rule_desc_map.get("lookup_condition")+" (SELECT "+rule_desc_map.get("lookup_select_column")+" FROM "+rule_desc_map.get("lookup_table") +" WHERE "+rule_desc_map.get("lookup_predicate_field")+"='"+rule_columns+"');";	
+			}
+		  else {
+			  System.out.println( "Rule Desc  not defined");
+		  }
+	    break;
+	  case "NULL_CHECK_REJECT":
+		  if(!rule_desc.equals(null)) {
+			  
+			  String[] columns=rule_columns.split("\\|");
+			
+			  String nullQuery="";
+			  for(int j=0;j< columns.length;j++) {
+				  if(j==0) {
+					  
+					  nullQuery = nullQuery+ " ("+ columns[j] + " IS NULL OR TRIM("+columns[j] +") = '') "; 
+					
+				  }
+				  else {
+					
+					  nullQuery = nullQuery+ " "+rule_desc_map.get("null_check_condition")+ " ("+ columns[j] + " IS NULL OR TRIM("+columns[j] +") = '') ";
+					  
+				  }
+				
+			  }
+			
+			  query=query+"SELECT *  FROM "+rule_table + " WHERE "+nullQuery+";";	
+			}
+		  else {
+			  System.out.println( "Rule Desc not defined");
+		  }
+	    break;
+	  case "STANDARDIZE":
+		  
+	  if(!rule_desc.equals(null)) {
+		  query=query+"UPDATE "+rule_table+ " SET "+rule_columns.toUpperCase() + " = "+rule_desc_map.get("lookup_value_field").toUpperCase()+ " FROM (SELECT "+
+		  rule_desc_map.get("lookup_source_field")+" , "+rule_desc_map.get("lookup_value_field")+ " FROM "+rule_desc_map.get("look_up_table")+ " WHERE "+rule_desc_map.get("lookup_predicate_field")+" = '"+rule_columns+"') T"
+		  +" WHERE CONTAINS(T."+rule_desc_map.get("lookup_source_field")+","+rule_columns+");";	
+			}
+		  else {
+			  System.out.println( "Rule Desc  not defined");
+		  }
+	    break;
+	 default:
+	    // code block
+	}
+	return query;
+}
+
+public static String getNextRunTime(String cronExpression,String referenceDate,String dateTimeFormat) {
+	Date refDate = new Date();
+	Date nextRunDate = new Date();
+
+	SimpleDateFormat f = new SimpleDateFormat(dateTimeFormat);
+	try {
+	refDate = f.parse(referenceDate);
+	//d2 = f.parse(endTime);
+	CronExpression exp= new CronExpression(cronExpression);
+	nextRunDate = exp.getNextValidTimeAfter(refDate);
+	}
+	catch (Exception ex) {
+		ex.printStackTrace();
+	}
+
+	return TalendDate.formatDate(dateTimeFormat, nextRunDate);
+	
+	
+}
+public static String generateQuery(String queryString,String replacementParams) {
+	
+	String queryOutput= queryString;
+	for(int i=0;i< replacementParams.split("\\|").length;i++){
+
+		String key= replacementParams.split("\\|")[i].split(":")[0];
+
+		String value= replacementParams.split("\\|")[i].split(":")[1];
+
+		queryOutput= queryOutput.replace("["+key+"]", value);
+
+		}
+	return queryOutput;
+	
+	
+}
+public static String getprefixedColumns(String prefix, String columnList) {
+
+	String outStr="";
+	for(int i=0;i<columnList.split("\\|").length;i++)
+	{
+		outStr=outStr+prefix+"."+columnList.split("\\|")[i]+",";
+	}
+	
+	return outStr.substring(0, outStr.length()-1);
+
+}
+
+}

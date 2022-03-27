@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:TalendProperties="http://www.talend.org/properties">
+  <TalendProperties:Project xmi:id="_-fXikXrBEeuQssBQqLU4qQ" label="MDF_FT" description="This project is for MDF field tool code" language="java" technicalLabel="MDF_FT" author="_-fXiknrBEeuQssBQqLU4qQ" productVersion="Talend Cloud Real-Time Big Data Platform-7.3.1.20210422_0824-patch" url="{&quot;commitLogPattern&quot;:&quot;{0}&quot;,&quot;location&quot;:&quot;https://github.com/TalendPS/MDF_FT.git&quot;,&quot;settings&quot;:&quot;000&quot;,&quot;storage&quot;:&quot;git&quot;}" type="DQ" itemsRelationVersion="1.3" bigData="false">
+    <migrationTask xmi:id="_-iSTsHrBEeuQssBQqLU4qQ" id="org.talend.repository.model.migration.CheckProductVersionMigrationTask" breaks="7.1.0" version="7.1.1"/>
+  </TalendProperties:Project>
+  <TalendProperties:User xmi:id="_-fXiknrBEeuQssBQqLU4qQ" login="schakraborty.talend.com@talendconsultingus.aws" firstName="Soumen" lastName="Chakraborty" type="DQ"/>
+  <TalendProperties:User xmi:id="_gFnRsHrIEeuGs-iKuKFaXg" login="tsingh.talend.com@talendconsultingus.aws" firstName="TejPratap" lastName="Singh" type="DQ"/>
+  <TalendProperties:User xmi:id="_xcN5AIDaEeuSyeDJGhRO8w" login="ssamantaray.talend.com@talendconsultingus.aws" firstName="Sujit" lastName="Samantaray" type="DQ"/>
+  <TalendProperties:User xmi:id="_EhCsEJaYEeuEgdbVZ1erjw" login="plima.talend.com@talendconsultingus.aws" firstName="Paulo" lastName="Lima" type="DQ"/>
+  <TalendProperties:User xmi:id="_kDFlULptEeuFAbv8xUyOTA" login="ssreenath.talend.com@talendconsultingus.aws" firstName="Sujan" lastName="Sreenath" type="DQ"/>
+</xmi:XMI>
